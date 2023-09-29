@@ -9,7 +9,7 @@ const Tag = () => {
       <br />
       <p>Add new tags here :</p>
       <div className="flexGrow">
-        <Link to="/">Home</Link>
+        <Link to="/home">Home</Link>
       </div>
     </section>
   );

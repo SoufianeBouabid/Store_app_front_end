@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+//
+// import useFetch from "../hooks/useFetch";
 
 const Login = () => {
-  const { setAuth } = useAuth();
-
+  const { setAccess, setRefresh, setUs } = useAuth();
   const navigate = useNavigate();
   //const location = useLocation();
   // const from = location.state?.from?.pathname || "/";
@@ -15,6 +16,8 @@ const Login = () => {
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
+
+  // let api = useFetch();
 
   useEffect(() => {
     userRef.current.focus();
@@ -38,17 +41,27 @@ const Login = () => {
         headers: {
           "Content-type": "application/json",
           withCredentials: true,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "*",
         },
       });
-      console.log(await response.json());
+      let data = await response.json();
 
-      const accessToken = response?.data?.access_token;
-      setAuth({ user, pwd, accessToken });
-      setUser("");
-      setPwd("");
+      if (response.status === 200) {
+        console.log("cest bon");
+        setAccess(data.access_token);
+        console.log(data);
+        setRefresh(data.refresh_token);
+        setUs(data.username);
+
+        navigate("/home");
+      } else {
+        alert("Something went wrong!");
+      }
+
       // from value = where the user wanted to go before being sent to login page
-      navigate("/home");
     } catch (err) {
+      console.log("erreur ici", err);
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 400) {
