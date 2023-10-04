@@ -1,20 +1,54 @@
 import { Link } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import MyTable from "./Table";
-
+import * as yup from "yup";
 import customFetcher from "../hooks/fetchInstance";
 import useSWR from "swr";
+import { useForm } from "react-hook-form";
+import useSWRMutation from "swr/mutation";
+import styles from "../index.css";
 
 const User = () => {
   const navigate = useNavigate();
   console.log("before call");
 
   const { data, error } = useSWR("http://localhost:5000/user", customFetcher, {
-    focusThrottleInterval: 30000,
+    focusThrottleInterval: 1000,
   });
+
   console.log(data);
   if (error) {
     navigate("/login");
+  }
+
+  const schema = yup.object().shape({
+    user: yup.string().min(1).required("Username is required"),
+    pwd: yup.string().min(1).required("Please enter a valid password"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
+
+  console.log(errors);
+
+  const { trigger: triggerSubmit } = useSWRMutation(
+    "http://localhost:5000/register",
+    onFormSubmit
+  );
+
+  function onFormSubmit(url, { arg }) {
+    console.log("fetch", arg);
+    fetch("http://localhost:5000/register", {
+      method: "POST",
+      body: JSON.stringify({ username: arg.user, password: arg.pwd }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    }).then(() => console.log("fetch "));
   }
 
   return (
@@ -22,17 +56,39 @@ const User = () => {
       <h1>Users Page</h1>
       <br />
       <article>
+        <h2 className={styles.heading}>Add new User</h2>
+        <form
+          onSubmit={handleSubmit((data) => {
+            console.log("trigger go", data);
+            triggerSubmit(data);
+          })}
+          className={styles.form}
+        >
+          <label htmlFor="Username">Username</label>
+          <input
+            {...register("user")}
+            type="text"
+            placeholder="Enter username"
+            className={styles.input}
+          />
+
+          <p className="errorMessage">{errors.user?.message}</p>
+          <label htmlFor="pwd">Title</label>
+          <input
+            {...register("pwd")}
+            placeholder="Enter Post Title"
+            type="password"
+            className={styles.input}
+          />
+          <p className="errorMessage">{errors.password?.message}</p>
+          <button type="submit" className={styles.button}>
+            Submit
+          </button>
+        </form>
+      </article>
+      <article>
         <h2>Users List</h2>
         <MyTable data={data?.data || []} />
-        {/* {data?.data.length ? (
-          <ul>
-            {data.data.map((singleUser, i) => (
-              <li key={i}>{singleUser?.name}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No users to display</p>
-        )} */}
       </article>
 
       <div className="flexGrow">

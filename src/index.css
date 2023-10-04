@@ -112,3 +112,12 @@ button {
 .line {
     display: inline-block;
 }
+
+.heading{
+    color: rgb(192, 47, 132);
+    margin-bottom: 0.5rem;
+}
+
+form {
+    margin-bottom: 20px;
+  }
