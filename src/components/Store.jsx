@@ -1,20 +1,20 @@
 import { Link } from "react-router-dom";
-import useFetch from "../hooks/useFetch";
 import { useState, useEffect } from "react";
-import { useContext } from "react";
-import AuthContext from "../context/AuthProvider";
+// import { useContext } from "react";
+// import AuthContext from "../context/AuthProvider";
+import customFetcher from "../hooks/fetchInstance";
 
 const Store = () => {
-  const api = useFetch();
+
   let [stores, setStores] = useState([]);
-  let { authTokens } = useContext(AuthContext);
+  // let { authTokens } = useContext(AuthContext);
 
   useEffect(() => {
     getStores();
   }, []);
 
   let getStores = async () => {
-    let { response, data } = await api("/http://localhost:5000/store/");
+    let { response, data } = await customFetcher("/http://localhost:5000/store/");
 
     if (response.status === 200) {
       setStores(data);

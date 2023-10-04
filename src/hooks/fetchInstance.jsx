@@ -17,11 +17,7 @@ const refreshToken = async () => {
     const response = await fetch("http://localhost:5000/refresh", {
       method: "POST",
       headers: {
-        // Authorization: `Bearer ${refresh_token}`,
         "Content-type": "application/json",
-        //çà marche sans çà:
-        // "Access-Control-Allow-Origin": "*",
-        // "Access-Control-Allow-Headers": "*",
       },
       body: JSON.stringify({ refresh_token }),
     });
@@ -35,8 +31,6 @@ const refreshToken = async () => {
 };
 
 let customFetcher = async (url, config = {}) => {
-  //   const user = jwt_decode(authTokens.access);
-  //   const isExpired = dayjs.unix(user.exp);
   let access_token = localStorage.getItem("accessToken")
     ? localStorage.getItem("accessToken")
     : null;
