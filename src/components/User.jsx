@@ -8,19 +8,26 @@ import useSWR from "swr";
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
 import styles from "../index.css";
+import { useEffect } from "react";
 
 const User = () => {
   const navigate = useNavigate();
   console.log("before call");
 
-  const { data, error } = useSWR("http://localhost:5000/user", customFetcher, {
-    focusThrottleInterval: 1000,
-  });
+  const { data, error, mutate } = useSWR(
+    "http://localhost:5000/user",
+    customFetcher
+  );
 
   console.log(data);
-  if (error) {
-    navigate("/login");
-  }
+  useEffect(() => {
+    if (error) {
+      console.error("Error from server:", error);
+      if (error.message === "invalid_token") {
+        navigate("/login");
+      }
+    }
+  }, [error]);
 
   const schema = yup.object().shape({
     user: yup.string().min(1).required("Username is required"),
@@ -48,7 +55,11 @@ const User = () => {
       headers: {
         "Content-type": "application/json",
       },
-    }).then(() => console.log("fetch "));
+    })
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log(err.message);
+      });
   }
 
   return (
@@ -61,6 +72,9 @@ const User = () => {
           onSubmit={handleSubmit((data) => {
             console.log("trigger go", data);
             triggerSubmit(data);
+            setTimeout(() => {
+              mutate();
+            }, 500);
           })}
           className={styles.form}
         >
@@ -88,7 +102,7 @@ const User = () => {
       </article>
       <article>
         <h2>Users List</h2>
-        <MyTable data={data?.data || []} />
+        <MyTable mutate={mutate} data={data?.data || []} />
       </article>
 
       <div className="flexGrow">

@@ -3,19 +3,38 @@ import { useTable } from "react-table";
 import PropTypes from "prop-types";
 
 MyTable.propTypes = {
-  data: PropTypes.array.isRequired, // Expecting data to be an array
+  data: PropTypes.array.isRequired,
 };
 
-function MyTable({ data }) {
+function MyTable({ data, mutate }) {
   const columns = React.useMemo(
     () => [
       {
-        Header: "Row Number",
-        accessor: (row, index) => index + 1, // Generate row numbers
+        Header: "User ID",
+        accessor: "id",
       },
       {
         Header: "Name",
-        accessor: "name", // Access the 'name' property from your data
+        accessor: "name",
+      },
+      {
+        Header: "Actions",
+        accessor: "actions",
+        Cell: ({ row }) => {
+          // console.log(row.original);
+          return (
+            <button
+              onClick={() => {
+                handleDelete(row.original);
+                setTimeout(() => {
+                  mutate();
+                }, 500);
+              }}
+            >
+              Delete
+            </button>
+          );
+        },
       },
     ],
     []
@@ -26,6 +45,33 @@ function MyTable({ data }) {
       columns,
       data,
     });
+
+  const handleDelete = (transformedData) => {
+    //Receive the user object
+    const rowId = transformedData.id; // Access the 'id' property from the user object
+    console.log(rowId);
+    let access_token = localStorage.getItem("accessToken")
+      ? localStorage.getItem("accessToken")
+      : null;
+
+    fetch(`http://localhost:5000/user/${rowId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${access_token}`,
+        withCredentials: true,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // Handle successful deletion or error response
+        console.log("User deleted:", data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+  // console.log("Delete button clicked for row:", row);
 
   return (
     <table {...getTableProps()}>
