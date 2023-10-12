@@ -8,31 +8,21 @@ import useSWR from "swr";
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
 import styles from "../index.css";
-import { useEffect } from "react";
 
 const User = () => {
   const navigate = useNavigate();
   console.log("before call");
 
-  const { data, error, mutate } = useSWR(
-    "http://localhost:5000/user",
-    customFetcher
-  );
-
-  console.log(data);
-  useEffect(() => {
-    if (error) {
-      console.error("Error from server:", error);
-      if (error.message === "invalid_token") {
-        navigate("/login");
-      }
-    }
-  }, [error]);
+  const { data, mutate } = useSWR("http://localhost:5000/user", customFetcher);
 
   const schema = yup.object().shape({
     user: yup.string().min(1).required("Username is required"),
     pwd: yup.string().min(1).required("Please enter a valid password"),
   });
+
+  if (data && data.data && data.data.error === "invalid_token") {
+    navigate("/login");
+  }
 
   const {
     register,
@@ -61,7 +51,6 @@ const User = () => {
         console.log(err.message);
       });
   }
-
   return (
     <section>
       <h1>Users Page</h1>
@@ -87,10 +76,10 @@ const User = () => {
           />
 
           <p className="errorMessage">{errors.user?.message}</p>
-          <label htmlFor="pwd">Title</label>
+          <label htmlFor="pwd">Password</label>
           <input
             {...register("pwd")}
-            placeholder="Enter Post Title"
+            placeholder="Enter Password"
             type="password"
             className={styles.input}
           />
