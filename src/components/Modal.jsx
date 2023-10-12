@@ -3,15 +3,15 @@ import ReactModal from "react-modal";
 import PropTypes from "prop-types";
 
 Modal.propTypes = {
-  username: PropTypes.any.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  pwd: PropTypes.any.isRequired,
-  setPwd: PropTypes.func.isRequired,
-  selectedId: PropTypes.number.isRequired,
-  setSelectedId: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
-  mutate: PropTypes.func.isRequired,
+  username: PropTypes.any,
+  setUsername: PropTypes.func,
+  pwd: PropTypes.any,
+  setPwd: PropTypes.func,
+  selectedId: PropTypes.number,
+  setSelectedId: PropTypes.func,
+  isOpen: PropTypes.bool,
+  setIsOpen: PropTypes.func,
+  mutate: PropTypes.func,
 };
 
 export default function Modal({
@@ -31,7 +31,6 @@ export default function Modal({
 
   const onSubmit = (id) => {
     if (mutate) {
-      // console.log({ id, username, pwd });
       try {
         fetch(`http://localhost:5000/user/${id}`, {
           method: "POST",
@@ -43,18 +42,15 @@ export default function Modal({
           },
         })
           .then((res) => res.json())
-          .then((data) => {
-            console.log("User updated:", data);
+          .then(() => {
             setTimeout(() => {
               mutate();
             }, 500);
-          })
-          .catch((err) => {
-            console.log(err.message);
           });
+
         setIsOpen(false);
       } catch (err) {
-        console.log(err.message);
+        <p>{err.message}</p>;
       }
     }
   };

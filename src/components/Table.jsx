@@ -31,7 +31,6 @@ function MyTable({ data, mutate }) {
         Header: "Deletion",
         accessor: "deletion",
         Cell: ({ row }) => {
-          // console.log(row.original);
           return (
             <button
               onClick={() => {
@@ -58,7 +57,6 @@ function MyTable({ data, mutate }) {
                   setPwd("");
                   setSelectedId(row.original.id);
                   setIsOpen(true);
-                  console.log("hello");
                 }}
               >
                 Update
@@ -67,12 +65,11 @@ function MyTable({ data, mutate }) {
                 <Modal
                   username={username}
                   selectedId={selectedId}
-                  setSelectedId={setSelectedId}                 
-                  pwd={pwd}        
+                  setSelectedId={setSelectedId}
+                  pwd={pwd}
                   isOpen={isOpen}
                   setIsOpen={setIsOpen}
                   mutate={mutate}
-                 
                 />
               }
             </>
@@ -91,7 +88,7 @@ function MyTable({ data, mutate }) {
 
   const memoizedHandleDelete = useCallback((user) => {
     const rowId = user.id;
-    console.log(rowId);
+
     let access_token = localStorage.getItem("accessToken")
       ? localStorage.getItem("accessToken")
       : null;
@@ -105,11 +102,7 @@ function MyTable({ data, mutate }) {
       },
     })
       .then((res) => res.json())
-      .then((data) => {
-        // Handle successful deletion or error response
-        console.log("User deleted:", data);
-
-        // Call mutate to refresh data after deletion
+      .then(() => {
         if (mutate) {
           setTimeout(() => {
             mutate();

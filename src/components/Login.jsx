@@ -48,9 +48,9 @@ const Login = () => {
       let data = await response.json();
 
       if (response.status === 200) {
-        console.log("cest bon");
+        
         setAccess(data.access_token);
-        console.log(data);
+        
         setRefresh(data.refresh_token);
         setUs(data.username);
 
@@ -61,7 +61,7 @@ const Login = () => {
 
       // from value = where the user wanted to go before being sent to login page
     } catch (err) {
-      console.log("erreur ici", err);
+      
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 400) {

@@ -37,18 +37,16 @@ const Register = () => {
   useEffect(() => {
     const result = USER_REGEX.test(user);
     setValidName(user);
-    console.log(result);
-    console.log(user);
+
     setValidName(result);
   }, [user]);
 
   useEffect(() => {
     const result = PWD_REGEX.test(pwd);
     setValidPwd(result);
-    console.log(result);
+
     const match = pwd === matchPwd;
     setValidMatch(match);
-    console.log(match);
   }, [pwd, matchPwd]);
 
   useEffect(() => {
@@ -65,7 +63,7 @@ const Register = () => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5000/register", {
+      await fetch("http://localhost:5000/register", {
         method: "POST",
         body: JSON.stringify({
           username: user,
@@ -76,18 +74,13 @@ const Register = () => {
           withCredentials: true,
         },
       });
-      console.log(await response.json());
-
       setSuccess(true);
-      //clear input fields by seeting state by empty
-      //useReducer :
       setUser("");
       setPwd("");
       setMatchPwd("");
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
-        //need to check for 409
       } else if (err.response?.status === 409) {
         setErrMsg("Username Taken");
       } else {

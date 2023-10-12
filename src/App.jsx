@@ -10,7 +10,6 @@ import Store from "./components/Store";
 import Tag from "./components/Tag";
 import Unauthorized from "./components/Unauthorized";
 import User from "./components/User";
-//import Cookies from "./components/cookie";
 
 import { Routes, Route } from "react-router-dom";
 
@@ -24,14 +23,10 @@ function App() {
         <Route path="linkpage" element={<LinkPage />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        {/* we want to protect these routes */}
+        {/* Protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="/home" element={<Home />} />
         </Route>
-
-        {/* <Route>
-          <Route path="/cookie" element={<Cookies />} />
-        </Route> */}
 
         <Route element={<RequireAuth />}>
           <Route path="item" element={<Item />} />
