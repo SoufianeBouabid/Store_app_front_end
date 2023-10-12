@@ -11,7 +11,6 @@ import styles from "../index.css";
 
 const User = () => {
   const navigate = useNavigate();
-  
 
   const { data, mutate } = useSWR("http://localhost:5000/user", customFetcher);
 
@@ -30,15 +29,12 @@ const User = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
-  
-
   const { trigger: triggerSubmit } = useSWRMutation(
     "http://localhost:5000/register",
     onFormSubmit
   );
 
   function onFormSubmit(url, { arg }) {
-    
     fetch("http://localhost:5000/register", {
       method: "POST",
       body: JSON.stringify({ username: arg.user, password: arg.pwd }),
@@ -59,7 +55,6 @@ const User = () => {
         <h2 className={styles.heading}>Add new User</h2>
         <form
           onSubmit={handleSubmit((data) => {
-            
             triggerSubmit(data);
             setTimeout(() => {
               mutate();
