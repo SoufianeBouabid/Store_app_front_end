@@ -4,10 +4,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 
-  build: {
-    rollupOptions: {
+  // build: {
+  //   rollupOptions: {
  
-      external: ["@fortawesome/free-solid-svg-icons", "@fortawesome/react-fontawesome"],
-    },
-  },
+  //     external: ["@fortawesome/free-solid-svg-icons", "@fortawesome/react-fontawesome"],
+  //   },
+  // },
 })
