@@ -33,6 +33,7 @@ const User = () => {
     "http://localhost:5000/register",
     onFormSubmit
   );
+  
   function onFormSubmit(url, { arg }) {
     fetch("http://localhost:5000/register", {
       method: "POST",
