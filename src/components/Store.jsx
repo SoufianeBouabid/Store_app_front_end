@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import customFetcher from "../hooks/fetchInstance";
 
 const Store = () => {
-
   let [stores, setStores] = useState([]);
   // let { authTokens } = useContext(AuthContext);
 
@@ -14,7 +13,9 @@ const Store = () => {
   }, []);
 
   let getStores = async () => {
-    let { response, data } = await customFetcher("/http://localhost:5000/store/");
+    let { response, data } = await customFetcher(
+      "https://rest-apis-flask-python-project-0h1o.onrender.com/store/"
+    );
 
     if (response.status === 200) {
       setStores(data);

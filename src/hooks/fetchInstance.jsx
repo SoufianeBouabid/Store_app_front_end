@@ -11,7 +11,7 @@ const refreshToken = async () => {
       ? localStorage.getItem("refreshToken")
       : null;
 
-    const response = await fetch("http://localhost:5000/refresh", {
+    const response = await fetch("https://rest-apis-flask-python-project-0h1o.onrender.com/refresh", {
       method: "POST",
       headers: {
         "Content-type": "application/json",

@@ -93,7 +93,7 @@ function MyTable({ data, mutate }) {
       ? localStorage.getItem("accessToken")
       : null;
 
-    fetch(`http://localhost:5000/user/${rowId}`, {
+    fetch(`https://rest-apis-flask-python-project-0h1o.onrender.com/user/${rowId}`, {
       method: "DELETE",
       headers: {
         "Content-type": "application/json",
