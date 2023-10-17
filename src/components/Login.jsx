@@ -17,8 +17,6 @@ const Login = () => {
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
 
-
-
   useEffect(() => {
     userRef.current.focus();
   }, []);
@@ -31,26 +29,28 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
-        method: "POST",
+      const response = await fetch(
+        "https://rest-apis-flask-python-project-0h1o.onrender.com/login",
+        {
+          method: "POST",
 
-        body: JSON.stringify({
-          username: user,
-          password: pwd,
-        }),
-        headers: {
-          "Content-type": "application/json",
-          withCredentials: true,
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "*",
-        },
-      });
+          body: JSON.stringify({
+            username: user,
+            password: pwd,
+          }),
+          headers: {
+            "Content-type": "application/json",
+            withCredentials: true,
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+          },
+        }
+      );
       let data = await response.json();
 
       if (response.status === 200) {
-        
         setAccess(data.access_token);
-        
+
         setRefresh(data.refresh_token);
         setUs(data.username);
 
@@ -61,7 +61,6 @@ const Login = () => {
 
       // from value = where the user wanted to go before being sent to login page
     } catch (err) {
-      
       if (!err?.response) {
         setErrMsg("No Server Response");
       } else if (err.response?.status === 400) {
