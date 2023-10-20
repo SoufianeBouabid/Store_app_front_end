@@ -14,7 +14,7 @@ const Store = () => {
 
   let getStores = async () => {
     let { response, data } = await customFetcher(
-      "https://rest-apis-flask-python-project-0h1o.onrender.com/store/"
+      `${import.meta.env.VITE_REACT_APP_API_URL}/store/`
     );
 
     if (response.status === 200) {

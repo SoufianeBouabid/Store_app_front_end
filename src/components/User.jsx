@@ -12,7 +12,10 @@ import styles from "../index.css";
 const User = () => {
   const navigate = useNavigate();
 
-  const { data, mutate } = useSWR("https://rest-apis-flask-python-project-0h1o.onrender.com/user", customFetcher);
+  const { data, mutate } = useSWR(
+    `${import.meta.env.VITE_REACT_APP_API_URL}/user`,
+    customFetcher
+  );
 
   const schema = yup.object().shape({
     user: yup.string().min(1).required("Username is required"),
@@ -30,12 +33,12 @@ const User = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const { trigger: triggerSubmit } = useSWRMutation(
-    "https://rest-apis-flask-python-project-0h1o.onrender.com/register",
+    `${import.meta.env.VITE_REACT_APP_API_URL}/register`,
     onFormSubmit
   );
-  
+
   function onFormSubmit(url, { arg }) {
-    fetch("https://rest-apis-flask-python-project-0h1o.onrender.com/register", {
+    fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/register`, {
       method: "POST",
       body: JSON.stringify({ username: arg.user, password: arg.pwd }),
       headers: {

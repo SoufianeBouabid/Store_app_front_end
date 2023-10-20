@@ -11,13 +11,16 @@ const refreshToken = async () => {
       ? localStorage.getItem("refreshToken")
       : null;
 
-    const response = await fetch("https://rest-apis-flask-python-project-0h1o.onrender.com/refresh", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ refresh_token }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_REACT_APP_API_URL}/refresh`,
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ refresh_token }),
+      }
+    );
 
     return response; //here we must take the access token and sendit back
   } catch (err) {
@@ -35,7 +38,6 @@ let customFetcher = async (url, config = {}) => {
   //Proceed with request
   config["headers"] = { Authorization: `Bearer ${access_token}` };
   let { response, data } = await originalRequest(url, config);
-
 
   if (response.status === 401) {
     const response = await refreshToken();

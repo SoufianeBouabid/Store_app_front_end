@@ -63,20 +63,17 @@ const Register = () => {
       return;
     }
     try {
-      await fetch(
-        "https://rest-apis-flask-python-project-0h1o.onrender.com/register",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            username: user,
-            password: pwd,
-          }),
-          headers: {
-            "Content-type": "application/json",
-            withCredentials: true,
-          },
-        }
-      );
+      await fetch(`${process.env.REACT_APP_API_URLPP_API_URLPP_API_URL}/register`, {
+        method: "POST",
+        body: JSON.stringify({
+          username: user,
+          password: pwd,
+        }),
+        headers: {
+          "Content-type": "application/json",
+          withCredentials: true,
+        },
+      });
       setSuccess(true);
       setUser("");
       setPwd("");

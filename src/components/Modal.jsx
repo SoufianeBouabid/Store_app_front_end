@@ -32,7 +32,7 @@ export default function Modal({
   const onSubmit = (id) => {
     if (mutate) {
       try {
-        fetch(`https://rest-apis-flask-python-project-0h1o.onrender.com/user/${id}`, {
+        fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/user/${id}`, {
           method: "POST",
           body: JSON.stringify({ username: user, password: pass }),
           headers: {
