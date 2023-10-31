@@ -64,7 +64,7 @@ const Register = () => {
     }
     try {
       await fetch(
-        "https://rest-apis-flask-python-project-0h1o.onrender.com/register",
+        "http://127.0.0.1:5000/register",
         {
           method: "POST",
           body: JSON.stringify({

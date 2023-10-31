@@ -12,7 +12,7 @@ import styles from "../index.css";
 const User = () => {
   const navigate = useNavigate();
 
-  const { data, mutate } = useSWR("https://rest-apis-flask-python-project-0h1o.onrender.com/user", customFetcher);
+  const { data, mutate } = useSWR("http://127.0.0.1:5000/user", customFetcher);
 
   const schema = yup.object().shape({
     user: yup.string().min(1).required("Username is required"),
@@ -30,12 +30,12 @@ const User = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const { trigger: triggerSubmit } = useSWRMutation(
-    "https://rest-apis-flask-python-project-0h1o.onrender.com/register",
+    "http://127.0.0.1:5000/register",
     onFormSubmit
   );
   
   function onFormSubmit(url, { arg }) {
-    fetch("https://rest-apis-flask-python-project-0h1o.onrender.com/register", {
+    fetch("http://127.0.0.1:5000/register", {
       method: "POST",
       body: JSON.stringify({ username: arg.user, password: arg.pwd }),
       headers: {

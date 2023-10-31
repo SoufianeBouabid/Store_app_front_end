@@ -14,7 +14,7 @@ const Store = () => {
 
   let getStores = async () => {
     let { response, data } = await customFetcher(
-      "https://rest-apis-flask-python-project-0h1o.onrender.com/store/"
+      "http://127.0.0.1:5000/store/"
     );
 
     if (response.status === 200) {
