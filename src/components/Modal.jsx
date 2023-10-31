@@ -32,7 +32,7 @@ export default function Modal({
   const onSubmit = (id) => {
     if (mutate) {
       try {
-        fetch(`http://127.0.0.1:5000/user/${id}`, {
+        fetch(`https://rest-apis-flask-python-project-0h1o.onrender.com/user/${id}`, {
           method: "POST",
           body: JSON.stringify({ username: user, password: pass }),
           headers: {
